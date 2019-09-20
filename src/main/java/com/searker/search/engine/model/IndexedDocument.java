@@ -1,4 +1,4 @@
-package com.searker.model;
+package com.searker.search.engine.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

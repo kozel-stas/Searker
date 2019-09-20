@@ -1,4 +1,4 @@
-package com.searker.model;
+package com.searker.search.engine.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,7 +9,7 @@ import java.util.Date;
 public class Document {
 
     @Id
-    private Long id;
+    private String id;
 
     @Field(value = "title")
     private String title;
@@ -20,11 +20,11 @@ public class Document {
     @Field(value = "location")
     private String originalLocation;
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
