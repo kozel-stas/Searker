@@ -4,8 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Document(collection = "Dictionary")
 public class Dictionary {
@@ -14,18 +13,18 @@ public class Dictionary {
     private String id;
 
     @Field(value = "keywords")
-    private LinkedList<String> keywords;
+    private HashSet<String> keywords;
 
     public Dictionary() {
-        this.keywords = new LinkedList<>();
+        this.keywords = new HashSet<>();
     }
 
-    public void setKeywords(List<String> keywords) {
+    public void setKeywords(Collection<String> keywords) {
         this.keywords.addAll(keywords);
     }
 
-    public LinkedList<String> getKeywords() {
-        return keywords;
+    public Set<String> getKeywords() {
+        return Collections.unmodifiableSet(keywords);
     }
 
     public void setId(String id) {

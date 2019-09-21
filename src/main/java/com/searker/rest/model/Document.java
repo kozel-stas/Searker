@@ -2,8 +2,6 @@ package com.searker.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.searker.rest.service.URLResolver;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
