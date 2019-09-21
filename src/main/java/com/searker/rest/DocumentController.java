@@ -52,6 +52,7 @@ public class DocumentController {
         doc.setOriginalLocation(document.getLocation());
         doc.setTitle(document.getTitle());
         doc.setDate(new Date());
+        doc.setDescription(document.getDescription());
         return ResponseEntity.ok(new Document(documentManager.saveDocument(doc), urlResolver));
     }
 

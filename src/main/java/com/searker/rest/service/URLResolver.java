@@ -8,4 +8,6 @@ public interface URLResolver {
 
     String resolveOriginalDocumentLocationURL(Document document);
 
+    String resolveUploadFileURL(String filename);
+
 }

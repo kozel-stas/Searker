@@ -14,11 +14,22 @@ public class Document {
     @Field(value = "title")
     private String title;
 
+    @Field(value = "description")
+    private String description;
+
     @Field(value = "date")
     private Date date;
 
     @Field(value = "location")
     private String originalLocation;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public void setId(String id) {
         this.id = id;

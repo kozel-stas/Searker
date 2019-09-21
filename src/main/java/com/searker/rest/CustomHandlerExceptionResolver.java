@@ -1,5 +1,6 @@
 package com.searker.rest;
 
+import com.searker.storage.FileNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;

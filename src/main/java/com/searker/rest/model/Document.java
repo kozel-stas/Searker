@@ -3,6 +3,7 @@ package com.searker.rest.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.searker.rest.service.URLResolver;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.Date;
@@ -22,6 +23,10 @@ public class Document {
 
     @JsonProperty
     @NotNull
+    private String description;
+
+    @JsonProperty
+    @NotNull
     private String location;
 
     public Document() {
@@ -31,7 +36,16 @@ public class Document {
         setId(document.getId());
         setDate(document.getDate());
         setTitle(document.getTitle());
+        setDescription(document.getDescription());
         setLocation(urlResolver.resolveOriginalDocumentLocationURL(document));
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setId(String id) {
