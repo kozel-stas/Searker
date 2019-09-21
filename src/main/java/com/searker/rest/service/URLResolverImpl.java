@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 public class URLResolverImpl implements URLResolver {
 
     @Override
-    public String resolveDocumentLocationURL(Document document) {
-        return "/document/" + document.getId();
+    public String resolveDocumentLocationURL(String  documentID) {
+        return "/document/" + documentID;
     }
 
     @Override

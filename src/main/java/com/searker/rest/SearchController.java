@@ -2,27 +2,41 @@ package com.searker.rest;
 
 import com.searker.rest.model.DocumentSearchResult;
 import com.searker.rest.model.SearchResult;
+import com.searker.rest.service.URLResolver;
+import com.searker.search.engine.model.SearchRequest;
+import com.searker.search.engine.service.SearchEngine;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/search")
 public class SearchController {
+
+    private final SearchEngine searchEngine;
+    private final URLResolver resolver;
+
+    public SearchController(SearchEngine searchEngine, URLResolver resolver) {
+        this.searchEngine = searchEngine;
+        this.resolver = resolver;
+    }
 
     @RequestMapping(
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<SearchResult> document(@RequestParam(name = "query") String query) {
-        List<DocumentSearchResult> searchResults = new ArrayList<>();
-        searchResults.add(new DocumentSearchResult("/document/5d84ffef5807e90d50df47b5", 60));
-        searchResults.add(new DocumentSearchResult("/document/5d83ddeb5807e91e146ce12a", 55));
-        SearchResult searchResult = new SearchResult(query, searchResults);
-        return ResponseEntity.ok(searchResult);
+        com.searker.search.engine.model.SearchResult searchResult = searchEngine.search(new SearchRequest(query));
+        return ResponseEntity.ok(
+                new SearchResult(
+                        searchResult.getSearchRequest().getQuery(),
+                        searchResult.getDocumentSearchResults().stream()
+                                .map(documentSearchResult -> new DocumentSearchResult(resolver.resolveDocumentLocationURL(documentSearchResult.getDocumentID()), documentSearchResult.getRank()))
+                                .collect(Collectors.toList())
+                )
+        );
     }
 
 }

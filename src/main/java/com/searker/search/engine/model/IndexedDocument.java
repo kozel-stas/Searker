@@ -4,29 +4,40 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "indexed_documents")
+@Document(collection = "IndexedDocuments")
 public class IndexedDocument {
 
     @Id
-    private Long id;
+    private String id;
 
     @Field(value = "weight_vector")
-    private int[] weightVector;
+    private double[] weightVector;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Field(value = "keyword_number")
+    private int[] keywordNumber;
 
-    public void setWeightVector(int[] weightVector) {
+    public void setWeightVector(double[] weightVector) {
         this.weightVector = weightVector;
     }
 
-    public int[] getWeightVector() {
+    public double[] getWeightVector() {
         return weightVector;
     }
 
-    public Long getId() {
+    public void setKeywordNumber(int[] keywordNumber) {
+        this.keywordNumber = keywordNumber;
+    }
+
+    public int[] getKeywordNumber() {
+        return keywordNumber;
+    }
+
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 }

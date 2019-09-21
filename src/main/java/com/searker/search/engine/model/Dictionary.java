@@ -13,18 +13,18 @@ public class Dictionary {
     private String id;
 
     @Field(value = "keywords")
-    private HashSet<String> keywords;
+    private String[] keywords;
 
     public Dictionary() {
-        this.keywords = new HashSet<>();
+        this.keywords = new String[0];
     }
 
-    public void setKeywords(Collection<String> keywords) {
-        this.keywords.addAll(keywords);
+    public void setKeywords(String[] keywords) {
+        this.keywords = keywords;
     }
 
-    public Set<String> getKeywords() {
-        return Collections.unmodifiableSet(keywords);
+    public String[] getKeywords() {
+        return keywords;
     }
 
     public void setId(String id) {

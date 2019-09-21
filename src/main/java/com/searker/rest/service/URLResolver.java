@@ -4,7 +4,7 @@ import com.searker.search.engine.model.Document;
 
 public interface URLResolver {
 
-    String resolveDocumentLocationURL(Document document);
+    String resolveDocumentLocationURL(String documentID);
 
     String resolveOriginalDocumentLocationURL(Document document);
 
