@@ -45,7 +45,7 @@ public class FileStorageService implements StorageService, InitializingBean {
 
     public Resource uploadResource(String fileName) {
         try {
-            return resourceLoader.getResource(this.fileStorageLocation.resolve(fileName).normalize().toString());
+            return resourceLoader.getResource(this.fileStorageLocation.resolve(fileName).normalize().toUri().toString());
         } catch (RuntimeException ex) {
             throw new FileNotFoundException("File not found " + fileName, ex);
         }

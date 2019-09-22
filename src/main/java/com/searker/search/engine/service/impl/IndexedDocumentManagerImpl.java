@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class IndexedDocumentManagerImpl implements IndexedDocumentManager, InitializingBean, Runnable {
+public class IndexedDocumentManagerImpl implements IndexedDocumentManager, Runnable {
 
     private static final Logger LOG = LogManager.getLogger(IndexedDocumentManagerImpl.class);
 
@@ -109,21 +109,18 @@ public class IndexedDocumentManagerImpl implements IndexedDocumentManager, Initi
 
     private Map<String, String[]> resolveDocumentKeywords(Map<String, Document> documentsMap) {
         Map<String, String[]> wordDocuments = new HashMap<>();
-        for (Document document : documentsMap.values()) {
+        Iterator<Document> iterator = documentsMap.values().iterator();
+        while (iterator.hasNext()) {
+            Document document = iterator.next();
             try {
                 wordDocuments.put(document.getId(), documentWordResolver.resolveKeywords(document));
             } catch (Exception e) {
                 LOG.error(e);
+                iterator.remove();
                 documentRepository.delete(document);
             }
         }
         return wordDocuments;
-    }
-
-    @Override
-    public void afterPropertiesSet() {
-        fullReindexIfNeeded();
-        new Thread(this).start();
     }
 
 
@@ -131,23 +128,24 @@ public class IndexedDocumentManagerImpl implements IndexedDocumentManager, Initi
 
     @Override
     public void run() {
+        fullReindexIfNeeded();
+        LOG.info("Started.");
         List<Document> documents = new ArrayList<>();
         long firstDocumentWaitTime = Long.MAX_VALUE;
         while (true) {
             try {
                 Document document = documentsForIndexation.poll(INDEX_THRESHOLD, TimeUnit.MILLISECONDS);
-                if (document == null) {
-                    continue;
+                if (document != null) {
+                    documents.add(document);
                 }
-                documents.add(document);
-                if (documents.size() == 1) {
+                if (documents.size() == 1 && document != null) {
                     firstDocumentWaitTime = System.currentTimeMillis();
                 }
-                if (firstDocumentWaitTime + INDEX_THRESHOLD < System.currentTimeMillis()) {
+                if (firstDocumentWaitTime + INDEX_THRESHOLD < System.currentTimeMillis() && documents.size() != 0) {
                     firstDocumentWaitTime = Long.MAX_VALUE;
                     List<Document> documentsForIndexation = new ArrayList<>(documents);
                     documents.clear();
-                    indexDocuments(documentsForIndexation, cachedIndexedDocuments, dictionaryRepository.getDictionary());
+                    cachedIndexedDocuments = indexDocuments(documentsForIndexation, cachedIndexedDocuments, dictionaryRepository.getDictionary());
                 }
             } catch (RuntimeException e) {
                 LOG.error(e);
