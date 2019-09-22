@@ -27,26 +27,20 @@ public abstract class VectorUtil {
 
     public static double euclideanNorm(double[] a) {
         double result = 0;
+        int i =0;
         for (double v : a) {
             result += v * v;
+            i++;
         }
         return Math.sqrt(result);
     }
 
-    public static int[] sum(int[] a, int[] b) {
-        int[] m1, m2;
-        if (a.length > b.length) {
-            m1 = a;
-            m2 = b;
-        } else {
-            m1 = b;
-            m2 = a;
-        }
-        int[] res = new int[m1.length];
-        for (int i = 0; i < m1.length; i++) {
-            res[i] = m1[i];
-            if (i < m2.length) {
-                res[i] += m2[i];
+    public static int[] sum(int[] a, int[] b, int num) {
+        int[] res = new int[a.length];
+        for (int i = 0; i < a.length; i++) {
+            res[i] = a[i];
+            if (i < b.length && b[i] > 0) {
+                res[i] += num;
             }
         }
         return res;

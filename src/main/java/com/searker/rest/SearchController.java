@@ -30,7 +30,13 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<SearchResult> document(@RequestParam(name = "query") String query, @RequestParam(name = "minRank", defaultValue = "0") double minRank) {
+    public ResponseEntity<SearchResult> document(
+            @RequestParam(name = "query") String query,
+            @RequestParam(name = "minRank", defaultValue = "0") double minRank
+    ) {
+        if (minRank > 1 && minRank < 0) {
+            return ResponseEntity.badRequest().build();
+        }
         com.searker.search.engine.model.SearchResult searchResult = searchEngine.search(new SearchRequest(query, minRank));
         return ResponseEntity.ok(
                 new SearchResult(

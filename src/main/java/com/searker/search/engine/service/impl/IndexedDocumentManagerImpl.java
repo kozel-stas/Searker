@@ -85,16 +85,16 @@ public class IndexedDocumentManagerImpl implements IndexedDocumentManager, Runna
         }
         Arrays.fill(keywordNumber, 0);
         for (IndexedDocument indexedDocument : indexedDocumentMap.values()) {
-            keywordNumber = VectorUtil.sum(keywordNumber, indexedDocument.getKeywordNumber());
+            keywordNumber = VectorUtil.sum(keywordNumber, indexedDocument.getKeywordNumber(), 1);
         }
         for (IndexedDocument indexedDocument : indexedDocumentMap.values()) {
             double[] weightVector = new double[indexedDocument.getKeywordNumber().length];
             double countWeight = 0;
             for (int i = 0; i < indexedDocument.getKeywordNumber().length; i++) {
-                countWeight += ((double) indexedDocument.getKeywordNumber()[i] * Math.log(((double) indexedDocumentMap.size() / keywordNumber[i])));
+                countWeight += ((double) indexedDocument.getKeywordNumber()[i] * Math.log(((double) (indexedDocumentMap.size() + 1) / keywordNumber[i])));
             }
             for (int i = 0; i < indexedDocument.getKeywordNumber().length; i++) {
-                weightVector[i] = ((double) indexedDocument.getKeywordNumber()[i] * Math.log(((double) indexedDocumentMap.size() / keywordNumber[i])))
+                weightVector[i] = ((double) indexedDocument.getKeywordNumber()[i] * Math.log(((double) (indexedDocumentMap.size() + 1) / keywordNumber[i])))
                         / (countWeight);
             }
             indexedDocument.setWeightVector(weightVector);
