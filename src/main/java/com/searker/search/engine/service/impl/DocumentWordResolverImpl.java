@@ -2,9 +2,7 @@ package com.searker.search.engine.service.impl;
 
 import com.searker.search.engine.model.Document;
 import com.searker.search.engine.service.DocumentWordResolver;
-import com.searker.storage.StorageService;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ProtocolResolver;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;

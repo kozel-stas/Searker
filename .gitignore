@@ -1,3 +1,4 @@
 target/
 .idea/
 Searker.iml
+*.log

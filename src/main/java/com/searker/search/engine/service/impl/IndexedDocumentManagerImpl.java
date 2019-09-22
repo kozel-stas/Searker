@@ -11,7 +11,6 @@ import com.searker.search.engine.util.CollectionUtil;
 import com.searker.search.engine.util.VectorUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
@@ -55,9 +54,7 @@ public class IndexedDocumentManagerImpl implements IndexedDocumentManager, Runna
 
     @Override
     public void onNewDocumentDiscovered(Document document) {
-        synchronized (documentsForIndexation) {
-            documentsForIndexation.add(document);
-        }
+        documentsForIndexation.add(document);
     }
 
     private Collection<IndexedDocument> indexDocuments(List<Document> documents, @Nullable Collection<IndexedDocument> previousIndexation, String[] dictionary) {
