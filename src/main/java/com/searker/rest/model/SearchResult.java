@@ -9,12 +9,21 @@ public class SearchResult {
 
     @JsonProperty
     private final String searchQuery;
+
+    @JsonProperty
+    private final Double minRank;
+
     @JsonProperty
     private final List<DocumentSearchResult> documents;
 
-    public SearchResult(String searchQuery, List<DocumentSearchResult> documents) {
+    public SearchResult(String searchQuery, Double minRank, List<DocumentSearchResult> documents) {
         this.searchQuery = searchQuery;
         this.documents = ImmutableList.copyOf(documents);
+        this.minRank = minRank;
+    }
+
+    public Double getMinRank() {
+        return minRank;
     }
 
     public List<DocumentSearchResult> getDocuments() {

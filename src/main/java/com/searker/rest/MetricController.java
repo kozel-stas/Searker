@@ -31,7 +31,7 @@ public class MetricController {
     )
     public ResponseEntity<List<SearchResult>> metrics() {
         return ResponseEntity.ok(metricManager.retrieveMetrics().stream()
-                .map(searchResult -> new SearchResult(searchResult.getSearchRequest().getQuery(), searchResult.getDocumentSearchResults().stream()
+                .map(searchResult -> new SearchResult(searchResult.getSearchRequest().getQuery(), searchResult.getSearchRequest().getMinRank(), searchResult.getDocumentSearchResults().stream()
                         .map(documentSearchResult -> new DocumentSearchResult(urlResolver.resolveDocumentLocationURL(documentSearchResult.getDocumentID()), documentSearchResult.getRank()))
                         .collect(Collectors.toList()))).collect(Collectors.toList()));
     }

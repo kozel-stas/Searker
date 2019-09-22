@@ -36,12 +36,14 @@ public class SearchEngineImpl implements SearchEngine {
             double scalarMultiplication = VectorUtil.scalarMultiplication(indexedDocument.getWeightVector(), searchIndex, 0);
             double rank = scalarMultiplication == 0.0 ? 0 : scalarMultiplication /
                     (VectorUtil.euclideanNorm(indexedDocument.getWeightVector()) * VectorUtil.euclideanNorm(searchIndex));
-            documentSearchResults.add(
-                    new SearchResult.DocumentSearchResult(
-                            rank,
-                            indexedDocument.getId()
-                    )
-            );
+            if (rank >= searchRequest.getMinRank()) {
+                documentSearchResults.add(
+                        new SearchResult.DocumentSearchResult(
+                                rank,
+                                indexedDocument.getId()
+                        )
+                );
+            }
         }
         documentSearchResults.sort((o1, o2) -> Double.compare(o2.getRank(), o1.getRank()));
         return metricManager.register(new SearchResult(searchRequest, documentSearchResults));

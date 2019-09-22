@@ -7,7 +7,10 @@ import com.searker.search.engine.model.SearchRequest;
 import com.searker.search.engine.service.SearchEngine;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Collectors;
 
@@ -27,11 +30,12 @@ public class SearchController {
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<SearchResult> document(@RequestParam(name = "query") String query) {
-        com.searker.search.engine.model.SearchResult searchResult = searchEngine.search(new SearchRequest(query));
+    public ResponseEntity<SearchResult> document(@RequestParam(name = "query") String query, @RequestParam(name = "minRank", defaultValue = "0") double minRank) {
+        com.searker.search.engine.model.SearchResult searchResult = searchEngine.search(new SearchRequest(query, minRank));
         return ResponseEntity.ok(
                 new SearchResult(
                         searchResult.getSearchRequest().getQuery(),
+                        searchResult.getSearchRequest().getMinRank(),
                         searchResult.getDocumentSearchResults().stream()
                                 .map(documentSearchResult -> new DocumentSearchResult(resolver.resolveDocumentLocationURL(documentSearchResult.getDocumentID()), documentSearchResult.getRank()))
                                 .collect(Collectors.toList())
