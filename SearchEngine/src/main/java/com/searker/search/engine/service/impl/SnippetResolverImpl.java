@@ -24,7 +24,7 @@ public class SnippetResolverImpl implements SnippetResolver {
         List<Snippet> snippets = new LinkedList<>();
         String[] dictionary = dictionaryRepository.getDictionary();
         double[] indexVector = searchRequest.getSearchVector();
-        for (int i = 0; i < indexVector.length; i++) {
+        for (int i = 0; i < Math.min(indexVector.length, indexedDocument.getWeightVector().length); i++) {
             if (indexVector[i] == 1 && indexedDocument.getWeightVector()[i] > 0) {
                 snippets.add(new Snippet(dictionary[i], indexedDocument.getWeightVector()[i]));
             }
